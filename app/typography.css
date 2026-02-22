@@ -1,0 +1,64 @@
+/* --- P-Editorial + R-None --- */
+
+.prose {
+  @apply leading-[1.7] tracking-[0.001em] text-zinc-800 dark:text-zinc-200;
+  font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
+  max-width: 65ch; /* Perfect reading width */
+}
+
+/* Headings: confident, quiet */
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  @apply font-medium tracking-tight text-zinc-900 dark:text-zinc-50;
+  @apply scroll-mt-32; /* Smooth anchor offset */
+  margin-top: 2.4em;
+  margin-bottom: 0.9em;
+}
+
+.prose h1:first-child {
+  margin-top: 0;
+}
+
+/* Paragraph rhythm */
+.prose p {
+  @apply mb-5 text-[1.03rem];
+}
+
+/* Lists */
+.prose ul, .prose ol {
+  @apply my-5 pl-6;
+}
+
+/* Links — editorial whisper */
+.prose a {
+  @apply underline decoration-zinc-400/40 underline-offset-[5px]
+         hover:decoration-zinc-800 dark:hover:decoration-zinc-200 transition;
+}
+
+/* Blockquotes — printed essay tone */
+.prose blockquote {
+  @apply border-l border-zinc-300 dark:border-zinc-700 pl-5 italic my-8;
+}
+
+/* Code blocks — calm, unobtrusive */
+.prose pre {
+  @apply rounded-md border border-zinc-900/10 dark:border-white/10 
+         bg-zinc-50 dark:bg-zinc-950 py-4 px-5 text-sm leading-relaxed overflow-x-auto;
+}
+
+/* Inline code */
+.prose code {
+  @apply text-[0.92em] bg-zinc-100 dark:bg-zinc-900 px-1.5 py-[1px] rounded;
+}
+
+/* Images */
+.prose img {
+  @apply rounded-xl my-10;
+}
+
+/* Tables */
+.prose table {
+  @apply border-collapse my-10 w-full text-sm;
+}
+.prose th, .prose td {
+  @apply border border-zinc-300 dark:border-zinc-700 px-3 py-2;
+}

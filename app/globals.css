@@ -1,0 +1,265 @@
+@tailwind base;
+
+/* Smooth transition for theme changes */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 18px;
+  /* Increased base font size for better readability */
+}
+
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* --- LIGHT MODE TOKENS (Monochromatic Gray) --- */
+    --background: 0 0% 98%;
+    /* Slightly brighter for magazine feel */
+    --foreground: 0 0% 5%;
+    /* Darker for higher contrast */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 5%;
+
+    --primary: 0 0% 0%;
+    /* Pitch black for primary elements */
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 5%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
+    /* Lighter muted text for better hierarchy */
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 85%;
+    /* Slightly darker border */
+    --input: 0 0% 85%;
+    --ring: 0 0% 5%;
+
+    --radius: 0rem;
+    /* Sharp corners for magazine look */
+
+    /* Code Block Specifics (Light) */
+    --code-bg: #f5f5f5;
+    --code-text: #1a1a1a;
+    --code-shadow: rgba(0, 0, 0, 0.05);
+    --code-border: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark {
+    /* --- DARK MODE TOKENS (Monochromatic Gray) --- */
+    --background: 0 0% 5%;
+    /* Deep black/gray */
+    --foreground: 0 0% 95%;
+    /* Brighter for contrast */
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 5%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    /* Darker muted text for better hierarchy */
+
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 95%;
+
+    /* Code Block Specifics (Dark) */
+    --code-bg: #111111;
+    --code-text: #e0e0e0;
+    --code-shadow: rgba(0, 0, 0, 0.4);
+    --code-border: rgba(255, 255, 255, 0.05);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased leading-relaxed;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif tracking-tight text-foreground;
+    /* Serif for headings */
+  }
+
+  /* Premium Selection */
+  ::selection {
+    @apply bg-primary/10 text-primary;
+  }
+}
+
+@layer components {
+  .magazine-card {
+    @apply border-t border-border py-8 transition-all duration-300 hover:bg-muted/30;
+  }
+
+  .magazine-header {
+    @apply font-serif font-bold uppercase tracking-tight text-primary;
+  }
+
+  .drop-cap::first-letter {
+    @apply float-left text-6xl font-serif font-bold mr-4 mt-[-8px] text-primary;
+  }
+
+  .nit-highlight {
+    @apply font-bold text-primary relative inline-block;
+  }
+
+  .nit-highlight::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[2px] bg-primary/30;
+  }
+
+  .text-highlight {
+    @apply font-bold text-foreground;
+  }
+}
+
+/* --- PREMIUM SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-400 dark:bg-zinc-600;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-500 dark:bg-zinc-500;
+}
+
+/* --- CARBON CODE BLOCK STYLING --- */
+pre {
+  font-family: var(--font-mono);
+  border-radius: 0;
+  /* Sharp corners */
+  padding: 1.5rem;
+  margin: 2rem 0;
+  overflow-x: auto;
+
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: 1px solid var(--code-border);
+  box-shadow: none;
+  /* Flat for magazine */
+
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+/* Syntax Highlighting Tokens */
+pre .hljs-comment,
+pre .hljs-quote,
+pre .token.comment {
+  color: #8b949e;
+  font-style: italic;
+}
+
+pre .hljs-keyword,
+pre .hljs-selector-tag,
+pre .token.keyword {
+  color: #ff7b72;
+}
+
+pre .hljs-string,
+pre .hljs-doctag,
+pre .token.string {
+  color: #a5d6ff;
+}
+
+pre .hljs-title,
+pre .hljs-section,
+pre .hljs-selector-id,
+pre .token.function {
+  color: #d2a8ff;
+}
+
+pre .hljs-attr,
+pre .hljs-attribute,
+pre .hljs-variable,
+pre .token.variable {
+  color: #79c0ff;
+}
+
+pre .hljs-number,
+pre .token.number {
+  color: #f2cc60;
+}
+
+/* --- TYPOGRAPHY PROSE OVERRIDES --- */
+.prose {
+  @apply max-w-none text-foreground;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply text-foreground font-serif font-medium tracking-tight scroll-m-20;
+}
+
+.prose p {
+  @apply leading-8 [&:not(:first-child)]:mt-6 font-sans text-lg;
+}
+
+/* SAFE FIX: No opacity modifiers */
+.prose a {
+  @apply font-medium underline underline-offset-4 decoration-muted-foreground/50 hover:decoration-foreground transition-colors text-foreground;
+}
+
+/* SAFE FIX: No opacity modifiers */
+.prose blockquote {
+  @apply border-l-4 border-primary pl-6 italic text-muted-foreground font-serif text-xl;
+}
+
+.prose ul {
+  @apply list-disc list-outside ml-6;
+}
+
+.prose code {
+  @apply bg-muted px-[0.3rem] py-[0.15rem] text-sm font-mono font-medium text-foreground;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit font-normal;
+}
