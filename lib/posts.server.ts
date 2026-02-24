@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { getAdminDb } from "@/lib/firebase.admin";
 import type { Post } from "@/types/firestore";
 
@@ -35,7 +36,7 @@ export function serializePost(doc: FirebaseFirestore.DocumentSnapshot, options: 
   };
 }
 
-export async function getPaginatedPosts(limitCount: number, startAfterIsoDate?: string | null) {
+export const getPaginatedPosts = cache(async function getPaginatedPosts(limitCount: number, startAfterIsoDate?: string | null) {
   const db = getAdminDb();
   let query = db.collection("posts")
     .where("status", "==", "published")
@@ -64,9 +65,9 @@ export async function getPaginatedPosts(limitCount: number, startAfterIsoDate?: 
     console.error("Error fetching paginated posts:", error);
     return { posts: [], nextCursor: undefined };
   }
-}
+});
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export const getPostBySlug = cache(async function getPostBySlug(slug: string): Promise<Post | null> {
   const db = getAdminDb();
   try {
     const snapshot = await db.collection("posts")
@@ -81,4 +82,4 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     console.error(`Error fetching post by slug "${slug}":`, error);
     return null;
   }
-}
+});

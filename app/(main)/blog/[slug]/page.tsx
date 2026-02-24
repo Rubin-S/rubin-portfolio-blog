@@ -1,6 +1,7 @@
 export const revalidate = 3600;
 
 import { getAdminDb } from "@/lib/firebase.admin";
+import { getPostBySlug } from "@/lib/posts.server";
 
 export async function generateStaticParams() {
   const db = getAdminDb();
@@ -20,19 +21,8 @@ import PaperLayout from "@/components/PaperLayout";
 export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
 
-  const db = getAdminDb();
-
-  const snap = await db
-    .collection("posts")
-    .where("slug", "==", slug)
-    .limit(1)
-    .get();
-
-  if (snap.empty) {
-    return notFound();
-  }
-
-  const post = snap.docs[0].data();
+  const post = await getPostBySlug(slug);
+  if (!post) return notFound();
 
   return (
     <PaperLayout>
