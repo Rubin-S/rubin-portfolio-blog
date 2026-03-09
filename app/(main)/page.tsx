@@ -1,4 +1,6 @@
 import PaperLayout from "@/components/PaperLayout";
+
+export const revalidate = 3600;
 import Hero from "@/components/home/Hero";
 import Skills from "@/components/home/Skills";
 import Projects from "@/components/home/Projects";

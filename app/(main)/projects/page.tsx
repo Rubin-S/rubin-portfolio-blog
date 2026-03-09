@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
     title: "Projects | Rubin S",
     description: "Technical projects and experiments by Rubin S.",

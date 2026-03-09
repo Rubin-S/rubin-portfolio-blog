@@ -7,6 +7,7 @@ export default function ViewTracker({ slug }: { slug: string }) {
     const key = `viewed_${slug}`;
     if (sessionStorage.getItem(key)) return;
 
+    /* 
     fetch("/api/track-view", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -16,6 +17,7 @@ export default function ViewTracker({ slug }: { slug: string }) {
         if (res.ok) sessionStorage.setItem(key, "1");
       })
       .catch(() => {});
+    */
   }, [slug]);
 
   return null;

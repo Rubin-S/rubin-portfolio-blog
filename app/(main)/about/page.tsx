@@ -1,6 +1,8 @@
 import PaperLayout from "@/components/PaperLayout";
 import { Metadata } from "next";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
     title: "About | Rubin S",
     description: "Profile summary, education, skills, and leadership experience of Rubin S.",
