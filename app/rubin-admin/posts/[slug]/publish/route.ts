@@ -1,19 +1,26 @@
 import { NextResponse } from "next/server";
-import { getAdminDb } from "@/lib/firebase.admin";
-import { verifyAdmin } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
+import { verifyAdmin } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: { slug: string } }) {
   try {
     const session = await verifyAdmin();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const db = getAdminDb();
-    await db.collection("posts").doc(params.id).update({
+    await db.collection("posts").doc(params.slug).update({
+      status: "published",
       published: true,
-      updatedAt: Date.now(),
+      publishedAt: new Date(),
+      updatedAt: new Date(),
     });
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath(`/blog/${params.slug}`);
+
+    return NextResponse.json({ success: true, status: "published" }, { status: 200 });
   } catch (err) {
     console.error("Publish Error:", err);
     return NextResponse.json({ error: "Server Error" }, { status: 500 });

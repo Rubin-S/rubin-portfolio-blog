@@ -1,5 +1,5 @@
-import { getAdminDb } from "@/lib/firebase.admin";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
 

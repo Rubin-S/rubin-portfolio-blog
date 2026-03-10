@@ -1,9 +1,9 @@
 "use server";
 
-import { getAdminDb } from "@/lib/firebase.admin";
-import { verifyAdminSession } from "@/lib/auth";
 import slugify from "slugify";
 import { revalidatePath } from "next/cache";
+import { verifyAdminSession } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
 
 export interface CreateSeriesState {
     error?: string;
@@ -14,6 +14,11 @@ export interface UpdateSeriesState {
     error?: string;
     success?: boolean;
     lastSaved?: string;
+}
+
+interface UpdateSeriesInput {
+    title?: string;
+    description?: string;
 }
 
 export async function createSeries(prevState: CreateSeriesState, formData: FormData): Promise<CreateSeriesState> {
@@ -50,14 +55,14 @@ export async function createSeries(prevState: CreateSeriesState, formData: FormD
     return { slug };
 }
 
-export async function updateSeries(slug: string, data: any): Promise<UpdateSeriesState> {
+export async function updateSeries(slug: string, data: UpdateSeriesInput): Promise<UpdateSeriesState> {
     const session = await verifyAdminSession();
     if (!session) return { error: "Unauthorized" };
 
     const db = getAdminDb();
     const ref = db.collection("series").doc(slug);
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
         updatedAt: new Date(),
     };
 

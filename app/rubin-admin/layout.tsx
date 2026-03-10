@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { verifyAdminSession } from "@/lib/auth";
-import { LayoutDashboard, FileText, LogOut, PenTool, Library } from "lucide-react";
+import { verifyAdminSession } from "@/lib/auth/session";
+import { LayoutDashboard, FileText, PenTool, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default async function AdminLayout({

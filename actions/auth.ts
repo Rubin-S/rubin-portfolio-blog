@@ -1,9 +1,9 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getAdminAuth } from "@/lib/firebase.admin";
-import { SESSION_COOKIE_NAME } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { SESSION_COOKIE_NAME } from "@/lib/auth/session";
+import { getAdminAuth } from "@/lib/firebase/admin";
 
 export async function createSession(idToken: string) {
     try {

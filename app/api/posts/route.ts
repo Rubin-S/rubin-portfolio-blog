@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPaginatedPosts } from "@/lib/posts.server";
+import { getPaginatedPosts } from "@/lib/posts/queries";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

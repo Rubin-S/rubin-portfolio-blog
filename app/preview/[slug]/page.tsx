@@ -1,22 +1,27 @@
-// app/preview/[slug]/page.tsx
-import { getAdminDb } from "@/lib/firebase.admin";
 import { notFound } from "next/navigation";
-import RenderPost from "@/components/blog/RenderPost";
-import { verifyAdmin } from "@/lib/auth";
+import PostContent from "@/components/blog/PostContent";
+import { verifyAdmin } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
+import { serializePost } from "@/lib/posts/serialize";
 
 export default async function PreviewPage({ params }: { params: { slug: string } }) {
   const adminSession = await verifyAdmin();
-  if (!adminSession) return notFound();
+  if (!adminSession) {
+    return notFound();
+  }
 
   const db = getAdminDb();
-  const snap = await db.collection("posts").where("slug", "==", params.slug).limit(1).get();
-  if (snap.empty) return notFound();
-  const post = { id: snap.docs[0].id, ...snap.docs[0].data() } as any;
+  const snapshot = await db.collection("posts").where("slug", "==", params.slug).limit(1).get();
+  if (snapshot.empty) {
+    return notFound();
+  }
+
+  const post = serializePost(snapshot.docs[0], { includeContent: true });
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-16">
-      <div className="mb-6 text-xs opacity-60">Preview — Private</div>
-      <RenderPost post={post} />
+      <div className="mb-6 text-xs opacity-60">Preview - Private</div>
+      <PostContent content={post.content} />
     </main>
   );
 }

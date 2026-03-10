@@ -1,28 +1,19 @@
-import PostTable from "@/components/admin/PostTable";
-import { serializePost } from "@/lib/posts.server";
-import { getAdminDb } from "@/lib/firebase.admin";
+import PostTableClient from "./PostTableClient";
+import { serializePost } from "@/lib/posts/serialize";
+import { getAdminDb } from "@/lib/firebase/admin";
 
-// Ensure this page never caches statically so you always see fresh data
 export const dynamic = "force-dynamic";
 
 export default async function AdminPostsPage() {
   const db = getAdminDb();
-  
-  // Fetch latest posts
-  const snap = await db
-    .collection("posts")
-    .orderBy("updatedAt", "desc")
-    .limit(200)
-    .get();
+  const snapshot = await db.collection("posts").orderBy("updatedAt", "desc").limit(200).get();
 
-  // Transform data to satisfy the strict 'AdminPostRow' type
-  const posts = snap.docs.map((doc) => {
+  const posts = snapshot.docs.map((doc) => {
     const post = serializePost(doc);
-    
+
     return {
       ...post,
-      // FIX: Provide fallback for optional metrics to satisfy UI requirement
-      metrics: post.metrics ?? { views: 0, likes: 0 }, 
+      metrics: post.metrics ?? { views: 0, likes: 0 },
     };
   });
 
@@ -37,7 +28,7 @@ export default async function AdminPostsPage() {
         </div>
       </div>
 
-      <PostTable initialPosts={posts} />
+      <PostTableClient initialPosts={posts} />
     </div>
   );
 }

@@ -1,29 +1,30 @@
+export type PostStatus = "draft" | "published" | "archived";
+
+export type PostContent = string | Record<string, unknown>;
+
 export interface PostMetrics {
   views: number;
   likes: number;
-  lastViewedAt?: string | Date;
+  lastViewedAt?: string | Date | null;
 }
 
 export interface Post {
-  id: string; // <--- ADDED THIS
+  id: string;
   slug: string;
   title: string;
   excerpt: string;
-  content?: string | object;
+  content?: PostContent;
   published: boolean;
-  status: "draft" | "published" | "archived";
+  status: PostStatus;
   tags: string[];
   seriesId?: string;
   seriesIndex?: number;
   coverImage?: string;
-  
   seoTitle?: string;
   seoDescription?: string;
-
   publishedAt: string | null;
   updatedAt: string;
   createdAt: string;
-
   metrics?: PostMetrics;
 }
 

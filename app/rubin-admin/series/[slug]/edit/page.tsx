@@ -1,20 +1,19 @@
-import SeriesEditor from "@/components/admin/SeriesEditor";
-import { getSeriesBySlug } from "@/lib/series.server";
 import { notFound } from "next/navigation";
+import SeriesEditorClient from "./SeriesEditorClient";
+import { getSeriesBySlug } from "@/lib/series/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditSeriesPage({ params }: { params: { slug: string } }) {
-    const { slug } = params;
-    const series = await getSeriesBySlug(slug);
+  const series = await getSeriesBySlug(params.slug);
 
-    if (!series) {
-        return notFound();
-    }
+  if (!series) {
+    return notFound();
+  }
 
-    return (
-        <div className="p-10">
-            <SeriesEditor initialSeries={series} />
-        </div>
-    );
+  return (
+    <div className="p-10">
+      <SeriesEditorClient initialSeries={series} />
+    </div>
+  );
 }

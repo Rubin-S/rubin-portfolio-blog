@@ -1,7 +1,7 @@
-import { getAdminDb } from "@/lib/firebase.admin";
-import { requireAdmin } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
 
 export async function POST(
   req: Request,

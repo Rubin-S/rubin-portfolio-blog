@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminDb, getAdminApp } from "@/lib/firebase.admin"; // <--- Fixed Import
+import { getAdminDb, getAdminApp } from "@/lib/firebase/admin"; // <--- Fixed Import
 import * as admin from "firebase-admin"; // <--- Direct import for FieldValue
 
 export async function POST(req: Request) {

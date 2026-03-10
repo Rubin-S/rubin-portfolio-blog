@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { setSessionCookie } from "@/lib/auth";
+import { setSessionCookie } from "@/lib/auth/session";
 
 export async function POST(req: Request) {
   const { idToken } = await req.json();

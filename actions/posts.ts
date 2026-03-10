@@ -1,13 +1,13 @@
 "use server";
 
-import { getAdminDb } from "@/lib/firebase.admin";
-import { verifyAdminSession } from "@/lib/auth";
 import slugify from "slugify";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { verifyAdminSession } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
+import type { PostStatus as FirestorePostStatus } from "@/types/firestore";
 
 // --- Types ---
-export type PostStatus = "draft" | "published";
+export type PostStatus = Extract<FirestorePostStatus, "draft" | "published">;
 
 export interface CreatePostState {
     error?: string;
@@ -17,8 +17,18 @@ export interface CreatePostState {
 export interface UpdatePostState {
     error?: string;
     success?: boolean;
-    status?: PostStatus;
+    status?: string;
     lastSaved?: string;
+}
+
+interface UpdatePostInput {
+    title?: string;
+    excerpt?: string;
+    content?: unknown;
+    tags?: string[];
+    status?: string;
+    seriesId?: string | null;
+    seriesIndex?: number;
 }
 
 // --- Actions ---
@@ -65,14 +75,14 @@ export async function createPost(prevState: CreatePostState, formData: FormData)
     return { slug };
 }
 
-export async function updatePost(slug: string, data: any): Promise<UpdatePostState> {
+export async function updatePost(slug: string, data: UpdatePostInput): Promise<UpdatePostState> {
     const session = await verifyAdminSession();
     if (!session) return { error: "Unauthorized" };
 
     const db = getAdminDb();
     const ref = db.collection("posts").doc(slug);
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
         updatedAt: new Date(),
     };
 

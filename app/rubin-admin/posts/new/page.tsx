@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import slugify from "slugify";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { createPost, CreatePostState } from "@/actions/posts";
+import { createPost, type CreatePostState } from "@/actions/posts";
+import FormField from "@/components/ui/FormField";
 
 const initialState: CreatePostState = {};
 
@@ -13,21 +14,18 @@ export default function NewPostPage() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
-
-  // useActionState hook for form handling
   const [state, formAction, isPending] = useActionState(createPost, initialState);
 
-  const handleTitleChange = (v: string) => {
-    setTitle(v);
-    // Auto-generate slug from title if user hasn't manually edited slug (simplified logic)
-    setSlug(slugify(v, { lower: true, strict: true }));
+  const handleTitleChange = (value: string) => {
+    setTitle(value);
+    setSlug(slugify(value, { lower: true, strict: true }));
   };
 
   useEffect(() => {
     if (state.slug) {
       router.push(`/rubin-admin/posts/${state.slug}/edit`);
     }
-  }, [state.slug, router]);
+  }, [router, state.slug]);
 
   return (
     <div className="max-w-2xl mx-auto space-y-8 animate-slide-up-fade">
@@ -45,37 +43,35 @@ export default function NewPostPage() {
 
       <div className="rounded-xl border border-border/50 bg-card p-6 shadow-sm">
         <form action={formAction} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none">Title</label>
+          <FormField label="Title">
             <input
               name="title"
               autoFocus
               placeholder="Enter post title..."
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               value={title}
-              onChange={(e) => handleTitleChange(e.target.value)}
+              onChange={(event) => handleTitleChange(event.target.value)}
             />
-          </div>
+          </FormField>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none">Slug (URL)</label>
+          <FormField
+            label="Slug (URL)"
+            hint="This will be the permanent URL for your post."
+          >
             <div className="flex items-center rounded-md border border-input bg-muted/50 px-3">
               <span className="text-muted-foreground text-sm mr-1">/blog/</span>
               <input
                 name="slug"
                 className="flex h-10 w-full bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+                onChange={(event) => setSlug(event.target.value)}
               />
             </div>
-            <p className="text-[0.8rem] text-muted-foreground">
-              This will be the permanent URL for your post.
-            </p>
-          </div>
+          </FormField>
 
-          {state.error && (
+          {state.error ? (
             <div className="text-sm text-destructive font-medium">{state.error}</div>
-          )}
+          ) : null}
 
           <div className="pt-4 flex justify-end">
             <button

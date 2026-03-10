@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { getAdminDb } from "@/lib/firebase.admin";
-import { requireAdmin } from "@/lib/auth";
-import { serializePost } from "@/lib/posts.server";
+import { requireAdmin } from "@/lib/auth/session";
+import { getAdminDb } from "@/lib/firebase/admin";
+import { serializePost } from "@/lib/posts/serialize";
 
 export async function GET(
   req: Request,

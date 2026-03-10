@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
-import { getAdminDb } from "@/lib/firebase.admin";
+import { getAdminDb } from "@/lib/firebase/admin";
+import { serializePost } from "@/lib/posts/serialize";
 
 export const revalidate = 86400;
 
@@ -24,10 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .get();
 
     const posts = snapshot.docs.map((doc) => {
-      const data = doc.data();
+      const post = serializePost(doc);
       return {
-        url: `${baseUrl}/blog/${data.slug || doc.id}`,
-        lastModified: data.updatedAt ? new Date(data.updatedAt.toDate()) : new Date(),
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.7,
       };

@@ -1,7 +1,7 @@
 // app/api/admin/assets/upload/route.ts
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth";
-import { getAdminStorage } from "@/lib/firebase.admin";
+import { requireAdmin } from "@/lib/auth/session";
+import { getAdminStorage } from "@/lib/firebase/admin";
 
 export const runtime = "nodejs";
 
